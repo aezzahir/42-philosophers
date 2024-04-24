@@ -7,13 +7,12 @@
 #include <pthread.h>
 #include <limits.h>
 
-
 typedef struct s_arguments
 {
     int number_of_philosophers;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
+    size_t time_to_die;
+    size_t time_to_eat;
+    size_t time_to_sleep;
     int number_of_times_each_philosopher_must_eat;
 } t_data;
 
@@ -49,9 +48,9 @@ void ft_parse_arguments(int argc, char *argv[], t_data *data);
 
 
 
-long int	ft_atoi(const char *str);
-
-
+size_t	ft_atoi(const char *str);
+size_t	get_current_time(void);
+int	ft_usleep(size_t milliseconds);
 
 
 

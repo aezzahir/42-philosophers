@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SRC_FILES = src/main.c src/ft_atoi.c src/ft_parse_arguments.c 
+SRC_FILES = src/ ft_usleep.c src/ft_atoi.c rc/ft_parse_arguments.c src/get_current_time.c src/main.c
 OBJ_FILES = $(SRC_FILES:%.c=%.o)
 INCLUDES=includes/philo.h
 EXECUTABLE = philo

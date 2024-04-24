@@ -1,11 +1,11 @@
 #include "../includes/philo.h"
 
-long int	ft_atoi(const char *str)
+size_t	ft_atoi(const char *str)
 {
-	int			digit;
-	int			sign;
-	long int	result;
-	int			i;
+	size_t			digit;
+	size_t			sign;
+	size_t			result;
+	size_t			i;
 
 	sign = 1;
 	result = 0;
