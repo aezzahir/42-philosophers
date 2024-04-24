@@ -9,10 +9,10 @@ void print_data(t_data *data)
  
 void philo_routine(void *philo)
 {
-    think();
-    sleep();
-    eat();
-    die();
+    philo = (t_philo *)philo;
+    ft_think(philo);
+    ft_sleep(philo);
+    ft_eat(philo);
 }
 
 
@@ -37,8 +37,10 @@ int main(int argc, char *argv[])
 {
     t_data data;
     t_philo *philosopers;
+    pthread_t *threads;
     pthread_mutex_t *forks;
-    
+    int i;
+
     if (6 < argc)
         printf("./phio number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n\n\n");
     
@@ -47,7 +49,22 @@ int main(int argc, char *argv[])
 
     forks = ft_forks(data.number_of_philosophers);
     philosopers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
-    
+    threads = (pthread_t *)malloc(data.number_of_philosophers * sizeof(pthread_t));
+    i = 0;
+    while (i < data.number_of_philosophers)
+    {
+        (&philosopers[i])->left_fork_mutex = forks[i];
+        (&philosopers[i])->right_fork_mutex = forks[(i + 1) % data.number_of_philosophers];
+        philosopers[i].philo_id = i + 1;
+        pthread_create(&threads[i], NULL, philo_routine, (void *)&philosopers[i]);
+        i++;
+    }
+    i = 0;
+    while (i < data.number_of_philosophers)
+    {
+        pthread_join(threads[i], NULL);
+        i++;
+    }
 
     return(0);
 }
