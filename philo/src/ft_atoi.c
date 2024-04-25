@@ -2,10 +2,10 @@
 
 size_t	ft_atoi(const char *str)
 {
-	size_t			digit;
-	size_t			sign;
-	size_t			result;
-	size_t			i;
+	int			digit;
+	int			sign;
+	int			result;
+	int			i;
 
 	sign = 1;
 	result = 0;
@@ -19,11 +19,10 @@ size_t	ft_atoi(const char *str)
 	{
 		digit = str[i] - '0';
 		result = result * 10 + digit;
-		if (result > INT_MAX)
-			result = (long int)INT_MAX + 1;
-		if (result < INT_MIN)
-			result = (long int)INT_MIN - 1;
 		i++;
 	}
-	return (sign * result);
+	result = sign * result;
+	if (result < 0)
+		return (0);
+	return (size_t)(result);
 }
