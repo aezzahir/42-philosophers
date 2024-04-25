@@ -13,6 +13,7 @@
 
 typedef struct s_arguments
 {
+    bool someone_died;
     int number_of_philosophers;
     size_t time_to_die;
     size_t time_to_eat;
@@ -47,10 +48,12 @@ typedef struct s_philo {
     pthread_t thread;
     t_data *data; //pointer to data;
     size_t start_time;
+    size_t death_time;
     int number_of_meals_eaten;     // Number of meals eaten by this philosopher
     int last_meal_time;            // Timestamp of the philosopher's last meal (milliseconds)
     // Mandatory part (mutexes)
     bool eating_permission;
+    bool died;
     t_fork *left_fork;  // Mutex for the philosopher's left fork
     t_fork *right_fork; // Mutex for the philosopher's right fork
 
@@ -81,7 +84,7 @@ void    ft_take_a_fork(t_philo *philo, t_fork *fork);
 
 bool    ft_check_death(t_philo *philo);
 bool    ft_check_eating_permission(t_philo *philo);
-
+bool    ft_philo_is_full(t_philo *philo);
 
 
 /** helper functions */

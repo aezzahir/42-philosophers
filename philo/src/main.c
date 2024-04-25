@@ -10,15 +10,22 @@ void print_data(t_data *data)
 void *philo_routine(void *a_philo)
 {
     t_philo *philo;
-
     philo = (t_philo *)a_philo;
-    while (philo->number_of_meals_eaten < philo->data->number_of_times_each_philosopher_must_eat)
+
+    while (philo->data->number_of_times_each_philosopher_must_eat == -1 || philo->number_of_meals_eaten < philo->data->number_of_times_each_philosopher_must_eat)
     {
+        if (philo->died)
+        {
+            printf("%lu %d  died\n", philo->death_time, philo->id);
+            return (NULL);
+        }
+        if (philo->data->someone_died)
+            return NULL;
         ft_eat(philo);
         ft_sleep(philo);
         ft_think(philo);
     }
-    return NULL;
+    return (NULL);
 }
 
 
@@ -42,6 +49,24 @@ void ft_init_philosopher(t_philo *philo, t_data *data)
     philo->start_time = get_current_time();
     philo->data = data;
 }
+
+bool ft_check_if_a_philo_died(t_philo *philosophers)
+{
+    int i;
+
+    i = 0;
+    while (i < philosophers[0].data->number_of_philosophers)
+    {
+        if(philosophers[i].died)
+        {
+
+            printf("%lu %d  died\n", philosophers[i].death_time, philosophers[i].id);
+            return (true);
+        }
+        i++;
+    }
+    return (false);
+}
 int main2(int argc, char *argv[])
 {
     t_data data;
@@ -49,11 +74,14 @@ int main2(int argc, char *argv[])
     t_fork *forks;
     int i;
 
-    if (6 < argc)
+    if (argc != 5 && argc != 6)
+    {
         printf("./phio number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n\n\n");
+        return (0);
+    }
     
     ft_parse_arguments(argc, argv, &data);
-    print_data(&data);
+    //print_data(&data);
     forks = NULL;
     philosopers = NULL;
     if (data.number_of_philosophers > 0)
@@ -70,6 +98,7 @@ int main2(int argc, char *argv[])
         philosopers[i].id = i + 1;
         philosopers[i].number_of_meals_eaten = 0;
         philosopers[i].last_meal_time = 0;
+        philosopers[i].died = false;
         pthread_create(&(philosopers[i].thread), NULL, philo_routine, (void *)&philosopers[i]);
         if (philosopers[i].id % 2 == 0)
             philosopers[i].eating_permission = true;
@@ -93,6 +122,6 @@ int main2(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     main2(argc, argv);
-    system ("leaks philo");
+    //system ("leaks philo");
     return (0);
 }
