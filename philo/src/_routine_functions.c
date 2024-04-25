@@ -84,5 +84,5 @@ bool ft_check_death(t_philo *philo)
 
 bool    ft_check_eating_permission(t_philo *philo)
 {
-    return (!ft_isForkLocked(philo->left_fork) && !ft_isForkLocked(philo->right_fork));
+    return (philo->data->number_of_philosophers > 1 && !ft_isForkLocked(philo->left_fork) && !ft_isForkLocked(philo->right_fork));
 }
