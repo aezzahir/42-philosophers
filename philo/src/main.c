@@ -42,7 +42,7 @@ void ft_init_philosopher(t_philo *philo, t_data *data)
     philo->start_time = get_current_time();
     philo->data = data;
 }
-int main(int argc, char *argv[])
+int main2(int argc, char *argv[])
 {
     t_data data;
     t_philo *philosopers;
@@ -54,9 +54,13 @@ int main(int argc, char *argv[])
     
     ft_parse_arguments(argc, argv, &data);
     print_data(&data);
-
-    forks = ft_forks(data.number_of_philosophers);
-    philosopers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
+    forks = NULL;
+    philosopers = NULL;
+    if (data.number_of_philosophers > 0)
+    {
+        forks = ft_forks(data.number_of_philosophers);
+        philosopers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
+    }
     i = 0;
     while (i < data.number_of_philosophers)
     {
@@ -79,6 +83,16 @@ int main(int argc, char *argv[])
         pthread_join(philosopers[i].thread, NULL);
         i++;
     }
-
+    if (data.number_of_philosophers > 0)
+    {
+        free(forks);
+        free(philosopers);
+    }
     return(0);
+}
+int main(int argc, char *argv[])
+{
+    main2(argc, argv);
+    system ("leaks philo");
+    return (0);
 }
