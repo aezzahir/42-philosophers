@@ -92,10 +92,15 @@ int main(int argc, char *argv[])
         pthread_join(philosopers[i].thread, NULL);
         i++;
     }
-    if (data.number_of_philosophers > 0)
+    i = 0;
+    while (i < data.number_of_philosophers)
     {
-        free(forks);
-        free(philosopers);
+        if (philosopers[i].died)
+            printf("%lu %d  died\n", philosopers[i].death_time, philosopers[i].id);
+        i++;
     }
+    ft_cleanup(philosopers, &data, forks);
     return(0);
 }
+
+

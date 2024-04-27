@@ -49,6 +49,7 @@ void    ft_think(t_philo *philo)
     write_status(philo, "is thinking", YELLOW);
     while (!ft_check_eating_permission(philo))
     {
+        ft_usleep(1);
         if (ft_end(philo))
             return;
     }
@@ -65,9 +66,11 @@ bool ft_check_death(t_philo *philo)
     time_since_last_meal = current_time - philo->last_meal_time;
     if (time_since_last_meal > philo->time_to_die)
     {
+        pthread_mutex_lock(&philo->data->death_mutex);
+        philo->data->someone_died = true;
         philo->death_time = current_time;
         philo->died = true;
-        write_status(philo, "died", RED);
+        pthread_mutex_unlock(&philo->data->death_mutex);
         return (true);
     }
     return (false);

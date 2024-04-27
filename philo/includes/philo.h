@@ -13,8 +13,8 @@
 
 typedef struct s_arguments
 {
-    pthread_mutex_t write_mutex;
-    pthread_mutex_t death_mutex;
+    pthread_mutex_t write_mutex; // cleanUp
+    pthread_mutex_t death_mutex; // cleanUp
     bool someone_died;
     int number_of_philosophers;
     size_t  start_time;
@@ -36,6 +36,7 @@ typedef struct s_fork
 void ft_init_fork(t_fork *fork);
 void ft_lock_fork(t_fork *fork);
 void ft_unlockt_fork(t_fork *fork);
+void ft_destroy_fork(t_fork *fork);
 bool ft_isForkLocked(t_fork *fork);
 
 
@@ -123,7 +124,7 @@ void    write_status(t_philo *philo, char *status, char *color);
 
 
 
-
+void ft_cleanup(t_philo *philosophers, t_data *data, t_fork *forks);
 
 
 

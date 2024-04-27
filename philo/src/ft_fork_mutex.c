@@ -41,3 +41,10 @@ bool ft_isForkLocked(t_fork *fork)
     pthread_mutex_unlock(&(fork->key));
     return status;
 }
+
+
+void ft_destroy_fork(t_fork *fork)
+{
+    pthread_mutex_destroy(&(fork->mutex));
+    pthread_mutex_destroy(&(fork->key));
+}
