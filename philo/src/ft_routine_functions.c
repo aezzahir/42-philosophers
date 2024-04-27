@@ -18,8 +18,10 @@ void	ft_eat(t_philo *philo)
 		return ;
 	if (philo->eat_permission)
 	{
-		ft_take_a_fork(philo, philo->left_fork);
-		ft_take_a_fork(philo, philo->right_fork);
+		if (!ft_is_fork_locked(philo->left_fork))
+			ft_take_a_fork(philo, philo->left_fork);
+		if (!ft_is_fork_locked(philo->right_fork))
+			ft_take_a_fork(philo, philo->right_fork);
 	}
 	else
 		return ;
@@ -50,13 +52,26 @@ void	ft_sleep(t_philo *philo)
 
 void	ft_think(t_philo *philo)
 {
+	int nbr_of_forks;
+
+	nbr_of_forks = 0;
 	if (ft_end(philo))
 		return ;
 	write_status(philo, "is thinking", YELLOW);
-	while (!ft_check_eating_permission(philo))
+	while (!ft_check_eating_permission(philo) && nbr_of_forks < 2)
 	{
 		if (ft_end(philo))
 			return ;
+		if (!ft_is_fork_locked(philo->left_fork))
+		{
+			ft_take_a_fork(philo, philo->left_fork);
+			nbr_of_forks++;
+		}
+		if (!ft_is_fork_locked(philo->right_fork))
+		{
+			ft_take_a_fork(philo, philo->right_fork);
+			nbr_of_forks++;
+		}
 	}
 	philo->eat_permission = true;
 }
