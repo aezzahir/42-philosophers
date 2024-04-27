@@ -7,25 +7,28 @@ void ft_init_fork(t_fork *fork)
 {
     pthread_mutex_init(&(fork->mutex), NULL);
     pthread_mutex_init(&(fork->key), NULL);
+    pthread_mutex_lock(&(fork->key));
     fork->is_locked = false;
+    pthread_mutex_unlock(&(fork->key)); 
 }
 
 // Function to lock the mutex and set the flag
 void ft_lock_fork(t_fork *fork)
 {
     pthread_mutex_lock(&(fork->mutex));
+
     pthread_mutex_lock(&(fork->key));
-    fork->is_locked = false;
+    fork->is_locked = true;
     pthread_mutex_unlock(&(fork->key));
 }
 
 // Function to unlock the mutex and clear the flag
 void ft_unlockt_fork(t_fork *fork)
 {
+    pthread_mutex_unlock(&(fork->mutex));
     pthread_mutex_lock(&(fork->key));
     fork->is_locked = false;
-    pthread_mutex_unlock(&(fork->key));
-    pthread_mutex_unlock(&(fork->mutex));
+    pthread_mutex_unlock(&(fork->key)); 
 }
 
 // Function to check if the mutex is currently locked

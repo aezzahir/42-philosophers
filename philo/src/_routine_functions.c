@@ -4,7 +4,7 @@
 void    ft_eat(t_philo *philo)
 {
 
-    if (ft_end(philo))
+    if (ft_end(philo) || philo->time_to_eat < 1)
         return;
     if (philo->eat_permission)
     {
@@ -25,6 +25,8 @@ void    ft_eat(t_philo *philo)
 
 void    ft_take_a_fork(t_philo *philo, t_fork *fork)
 {
+    if (ft_end(philo))
+        return;
     ft_lock_fork(fork);
     write_status(philo, "has taken a fork", PURPLE);
 }
@@ -32,7 +34,7 @@ void    ft_take_a_fork(t_philo *philo, t_fork *fork)
 
 void    ft_sleep(t_philo *philo)
 {
-    if (ft_end(philo))
+    if (ft_end(philo) || philo->time_to_sleep < 1)
         return;
     write_status(philo, "is sleeping", BRIGHT_CYAN);
     ft_usleep(philo->time_to_sleep);
@@ -65,10 +67,7 @@ bool ft_check_death(t_philo *philo)
     {
         philo->death_time = current_time;
         philo->died = true;
-        pthread_mutex_lock(&philo->data->death_mutex);
-        philo->data->someone_died = true;
-        pthread_mutex_unlock(&philo->data->death_mutex);
-        printf("%lu %d  died\n", current_time, philo->id);
+        write_status(philo, "died", RED);
         return (true);
     }
     return (false);
