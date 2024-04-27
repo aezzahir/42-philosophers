@@ -44,11 +44,6 @@ t_fork *ft_forks(int number_of_philosophers)
     }
     return forks;
 }
-void ft_init_philosopher(t_philo *philo, t_data *data)
-{
-    philo->start_time = get_current_time();
-    philo->data = data;
-}
 
 bool ft_check_if_a_philo_died(t_philo *philosophers)
 {
@@ -67,7 +62,10 @@ bool ft_check_if_a_philo_died(t_philo *philosophers)
     }
     return (false);
 }
-int main2(int argc, char *argv[])
+
+
+
+int main(int argc, char *argv[])
 {
     t_data data;
     t_philo *philosopers;
@@ -81,7 +79,6 @@ int main2(int argc, char *argv[])
     }
     
     ft_parse_arguments(argc, argv, &data);
-    //print_data(&data);
     forks = NULL;
     philosopers = NULL;
     if (data.number_of_philosophers > 0)
@@ -89,21 +86,11 @@ int main2(int argc, char *argv[])
         forks = ft_forks(data.number_of_philosophers);
         philosopers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
     }
+    ft_init_philosopher(philosopers, &data, forks);
     i = 0;
     while (i < data.number_of_philosophers)
     {
-        ft_init_philosopher(&philosopers[i], &data);
-        (&philosopers[i])->left_fork = &forks[i];
-        (&philosopers[i])->right_fork = &forks[(i + 1) % data.number_of_philosophers];
-        philosopers[i].id = i + 1;
-        philosopers[i].number_of_meals_eaten = 0;
-        philosopers[i].last_meal_time = 0;
-        philosopers[i].died = false;
         pthread_create(&(philosopers[i].thread), NULL, philo_routine, (void *)&philosopers[i]);
-        if (philosopers[i].id % 2 == 0)
-            philosopers[i].eating_permission = true;
-        else
-            philosopers[i].eating_permission = false;
         i++;
     }
     i = 0;
@@ -118,10 +105,4 @@ int main2(int argc, char *argv[])
         free(philosopers);
     }
     return(0);
-}
-int main(int argc, char *argv[])
-{
-    main2(argc, argv);
-    //system ("leaks philo");
-    return (0);
 }

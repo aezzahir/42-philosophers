@@ -3,6 +3,8 @@
 
 void ft_parse_arguments(int argc, char *argv[], t_data *data)
 {
+    pthread_mutex_init(&(data->write_mutex), NULL);
+    data->start_time = get_current_time();
     data->someone_died = false;
     data->number_of_philosophers = ft_atoi(argv[1]);
     data->time_to_die = ft_atoi(argv[2]);

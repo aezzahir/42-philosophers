@@ -16,7 +16,7 @@ void    ft_eat(t_philo *philo)
         }
         return;
     }
-    if (philo->eating_permission)
+    if (philo->eat_permission)
     {
         ft_take_a_fork(philo, philo->left_fork);
         ft_take_a_fork(philo, philo->right_fork);
@@ -32,7 +32,7 @@ void    ft_eat(t_philo *philo)
     philo->number_of_meals_eaten++;                                 // increment number of meals eaten
     ft_unlockt_fork(philo->left_fork);
     ft_unlockt_fork(philo->right_fork);
-    philo->eating_permission = false;                               // no permission to eat
+    philo->eat_permission = false;                               // no permission to eat
 }
 
 
@@ -90,7 +90,7 @@ void    ft_think(t_philo *philo)
             return;
         }
     }
-    philo->eating_permission = true;
+    philo->eat_permission = true;
 }
 
 
