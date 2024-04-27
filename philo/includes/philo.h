@@ -55,6 +55,7 @@ typedef struct s_philo {
     bool died;
     bool    eat_permission;
     // duplicate the content of data for each philo
+    int number_of_philosophers;
     size_t  start_time;
     size_t time_to_die;
     size_t time_to_eat;

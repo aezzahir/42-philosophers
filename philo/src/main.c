@@ -12,15 +12,8 @@ void *philo_routine(void *a_philo)
     t_philo *philo;
     philo = (t_philo *)a_philo;
 
-    while (philo->data->number_of_times_each_philosopher_must_eat == -1 || philo->number_of_meals_eaten < philo->data->number_of_times_each_philosopher_must_eat)
+    while (!ft_end(philo))
     {
-        if (philo->died)
-        {
-            printf("%lu %d  died\n", philo->death_time, philo->id);
-            return (NULL);
-        }
-        if (philo->data->someone_died)
-            return NULL;
         ft_eat(philo);
         ft_sleep(philo);
         ft_think(philo);

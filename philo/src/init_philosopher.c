@@ -23,6 +23,7 @@ void ft_init_philosopher(t_philo *philosopers, t_data *data, t_fork *forks)
             philosopers[i].eat_permission = true;
         else
             philosopers[i].eat_permission = false;
+        philosopers[i].number_of_philosophers = data->number_of_philosophers;
         philosopers[i].start_time = data->start_time;
         philosopers[i].time_to_die = data->time_to_die;
         philosopers[i].time_to_eat  = data->time_to_eat;
