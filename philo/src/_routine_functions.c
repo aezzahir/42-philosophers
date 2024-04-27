@@ -3,7 +3,6 @@
 
 void    ft_eat(t_philo *philo)
 {
-    size_t current_time;
 
     if (ft_end(philo))
         return;
@@ -14,11 +13,8 @@ void    ft_eat(t_philo *philo)
     }
     else
         return;
-
-    current_time = get_current_time() - philo->start_time;
     philo->last_meal_time = get_current_time() - philo->start_time; // update last meal time 
-
-    printf("%lu %d  is eating\n", current_time, philo->id);
+    write_status(philo, "is eating", GREEN);
     ft_usleep(philo->time_to_eat);
     philo->number_of_meals_eaten++;                                 // increment number of meals eaten
     ft_unlockt_fork(philo->left_fork);
@@ -29,22 +25,16 @@ void    ft_eat(t_philo *philo)
 
 void    ft_take_a_fork(t_philo *philo, t_fork *fork)
 {
-    size_t current_time;
-
-    current_time = get_current_time() - philo->start_time;
     ft_lock_fork(fork);
-    printf("%lu %d   has taken a fork\n", current_time, philo->id);
+    write_status(philo, "has taken a fork", PURPLE);
 }
 
 
 void    ft_sleep(t_philo *philo)
 {
-    size_t current_time;
-
     if (ft_end(philo))
         return;
-    current_time = get_current_time() - philo->start_time;
-    printf("%lu %d  is sleeping\n", current_time, philo->id);
+    write_status(philo, "is sleeping", BRIGHT_CYAN);
     ft_usleep(philo->time_to_sleep);
 }
 
@@ -52,12 +42,9 @@ void    ft_sleep(t_philo *philo)
 
 void    ft_think(t_philo *philo)
 {
-    size_t current_time;
-
     if (ft_end(philo))
         return;
-    current_time = get_current_time() - philo->start_time;
-    printf("%lu %d  is thinking\n", current_time, philo->id);
+    write_status(philo, "is thinking", YELLOW);
     while (!ft_check_eating_permission(philo))
     {
         if (ft_end(philo))
@@ -78,9 +65,9 @@ bool ft_check_death(t_philo *philo)
     {
         philo->death_time = current_time;
         philo->died = true;
-        pthread_mutex_lock(&philo->data->write_mutex);
+        pthread_mutex_lock(&philo->data->death_mutex);
         philo->data->someone_died = true;
-        pthread_mutex_unlock(&philo->data->write_mutex);
+        pthread_mutex_unlock(&philo->data->death_mutex);
         printf("%lu %d  died\n", current_time, philo->id);
         return (true);
     }
@@ -105,9 +92,9 @@ bool ft_end(t_philo *philo)
 
     if (ft_philo_is_full(philo))
         return (true);
-    pthread_mutex_lock(&philo->data->write_mutex);
+    pthread_mutex_lock(&philo->data->death_mutex);
     status = philo->data->someone_died;
-    pthread_mutex_unlock(&philo->data->write_mutex);
+    pthread_mutex_unlock(&philo->data->death_mutex);
     if (status)
         return (status);
     status = ft_check_death(philo);

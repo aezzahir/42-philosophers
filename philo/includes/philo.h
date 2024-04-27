@@ -14,6 +14,7 @@
 typedef struct s_arguments
 {
     pthread_mutex_t write_mutex;
+    pthread_mutex_t death_mutex;
     bool someone_died;
     int number_of_philosophers;
     size_t  start_time;
