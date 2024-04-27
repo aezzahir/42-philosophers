@@ -105,9 +105,11 @@ bool ft_end(t_philo *philo)
 
     if (ft_philo_is_full(philo))
         return (true);
-    ft_check_death(philo);
     pthread_mutex_lock(&philo->data->write_mutex);
     status = philo->data->someone_died;
     pthread_mutex_unlock(&philo->data->write_mutex);
+    if (status)
+        return (status);
+    status = ft_check_death(philo);
     return (status);
 }
