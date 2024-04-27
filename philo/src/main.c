@@ -96,7 +96,10 @@ int main(int argc, char *argv[])
     while (i < data.number_of_philosophers)
     {
         if (philosopers[i].died)
+        {
             printf("%lu %d  died\n", philosopers[i].death_time, philosopers[i].id);
+            break;
+        }
         i++;
     }
     ft_cleanup(philosopers, &data, forks);

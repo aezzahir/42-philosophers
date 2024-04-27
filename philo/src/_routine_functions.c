@@ -15,7 +15,7 @@ void    ft_eat(t_philo *philo)
         return;
     philo->last_meal_time = get_current_time() - philo->start_time; // update last meal time 
     write_status(philo, "is eating", GREEN);
-    ft_usleep(philo->time_to_eat);
+    ft_usleep(philo->time_to_eat, philo);
     philo->number_of_meals_eaten++;                                 // increment number of meals eaten
     ft_unlockt_fork(philo->left_fork);
     ft_unlockt_fork(philo->right_fork);
@@ -37,7 +37,7 @@ void    ft_sleep(t_philo *philo)
     if (ft_end(philo) || philo->time_to_sleep < 1)
         return;
     write_status(philo, "is sleeping", BRIGHT_CYAN);
-    ft_usleep(philo->time_to_sleep);
+    ft_usleep(philo->time_to_sleep, philo);
 }
 
 
@@ -49,7 +49,6 @@ void    ft_think(t_philo *philo)
     write_status(philo, "is thinking", YELLOW);
     while (!ft_check_eating_permission(philo))
     {
-        ft_usleep(1);
         if (ft_end(philo))
             return;
     }

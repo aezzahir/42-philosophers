@@ -108,7 +108,7 @@ bool ft_end(t_philo *philo);
 
 /** helper functions */
 size_t	get_current_time(void);
-int	ft_usleep(size_t milliseconds);
+int	ft_usleep(size_t milliseconds, t_philo *philo);
 
 
 
