@@ -61,9 +61,8 @@ bool ft_check_if_a_philo_died(t_philo *philosophers)
 int main(int argc, char *argv[])
 {
     t_data data;
-    t_philo *philosopers;
+    t_philo *philosophers;
     t_fork *forks;
-    int i;
 
     if (argc != 5 && argc != 6)
     {
@@ -73,37 +72,44 @@ int main(int argc, char *argv[])
     
     ft_parse_arguments(argc, argv, &data);
     forks = NULL;
-    philosopers = NULL;
+    philosophers = NULL;
     if (data.number_of_philosophers > 0)
     {
         forks = ft_forks(data.number_of_philosophers);
-        philosopers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
+        philosophers = (t_philo *)malloc(data.number_of_philosophers * sizeof(t_philo));
     }
-    ft_init_philosopher(philosopers, &data, forks);
-    i = 0;
-    while (i < data.number_of_philosophers)
-    {
-        pthread_create(&(philosopers[i].thread), NULL, philo_routine, (void *)&philosopers[i]);
-        i++;
-    }
-    i = 0;
-    while (i < data.number_of_philosophers)
-    {
-        pthread_join(philosopers[i].thread, NULL);
-        i++;
-    }
-    i = 0;
-    while (i < data.number_of_philosophers)
-    {
-        if (philosopers[i].died)
-        {
-            printf("%lu %d  died\n", philosopers[i].death_time, philosopers[i].id);
-            break;
-        }
-        i++;
-    }
-    ft_cleanup(philosopers, &data, forks);
+    ft_init_philosopher(philosophers, &data, forks);
+    ft_run_simulation(philosophers, &data);
+    ft_cleanup(philosophers, &data, forks);
+    system("leaks philo");
     return(0);
 }
 
 
+void ft_run_simulation(t_philo *philosophers, t_data *data)
+{
+    int i;
+
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        pthread_create(&(philosophers[i].thread), NULL, philo_routine, (void *)&philosophers[i]);
+        i++;
+    }
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        pthread_join(philosophers[i].thread, NULL);
+        i++;
+    }
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        if (philosophers[i].died)
+        {
+            printf("%lu %d  died\n", philosophers[i].death_time, philosophers[i].id);
+            break;
+        }
+        i++;
+    }
+}

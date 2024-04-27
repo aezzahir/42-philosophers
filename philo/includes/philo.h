@@ -89,7 +89,7 @@ void *philo_routine(void *philo);
 void ft_parse_arguments(int argc, char *argv[], t_data *data);
 size_t	ft_atoi(const char *str);
 void ft_init_philosopher(t_philo *philosopers, t_data *data, t_fork *forks);
-
+void ft_run_simulation(t_philo *philosophers, t_data *data);
 
 
 /* Routine function */
