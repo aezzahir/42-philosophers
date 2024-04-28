@@ -53,8 +53,8 @@ size_t	ft_atoi(const char *str)
 		result = result * 10 + digit;
 		i++;
 	}
+	if (str[i] != '\0')
+		return (-1);
 	result = sign * result;
-	if (result < 0)
-		return (0);
 	return ((size_t)(result));
 }

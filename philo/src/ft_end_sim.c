@@ -6,7 +6,7 @@
 /*   By: aezzahir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:29:19 by aezzahir          #+#    #+#             */
-/*   Updated: 2024/04/27 21:31:30 by aezzahir         ###   ########.fr       */
+/*   Updated: 2024/04/28 09:36:52 by aezzahir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ bool	ft_check_death(t_philo *philo)
 bool	ft_check_eating_permission(t_philo *philo)
 {
 	return (philo->number_of_philosophers > 1
-		&& !ft_is_fork_locked(philo->left_fork)
-		&& !ft_is_fork_locked(philo->right_fork));
+		&& (!ft_is_fork_locked(philo->left_fork)
+			&& !ft_is_fork_locked(philo->right_fork)));
 }
 
 bool	ft_philo_is_full(t_philo *philo)

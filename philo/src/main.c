@@ -6,7 +6,7 @@
 /*   By: aezzahir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 21:44:26 by aezzahir          #+#    #+#             */
-/*   Updated: 2024/04/27 21:59:29 by aezzahir         ###   ########.fr       */
+/*   Updated: 2024/04/28 10:42:55 by aezzahir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ int	main(int argc, char *argv[])
 	t_philo	*philosophers;
 	t_fork	*forks;
 
-	if (argc != 5 && argc != 6)
+	if (argc != 5 && argc != 6 || !ft_parse_arguments(argc, argv, &data))
 	{
-		printf("./phio nb_of_philosophers t_die t_eat t_sleep [nb_of_meals]\n");
+		printf("./phio n_philo t_die t_eat t_sleep [n_meals]: int >= 0\n");
 		return (0);
 	}
-	ft_parse_arguments(argc, argv, &data);
 	forks = NULL;
 	philosophers = NULL;
 	if (data.number_of_philosophers > 0)

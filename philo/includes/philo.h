@@ -69,7 +69,7 @@ void	ft_unlockt_fork(t_fork *fork);
 void	ft_destroy_fork(t_fork *fork);
 bool	ft_is_fork_locked(t_fork *fork);
 void	*philo_routine(void *philo);
-void	ft_parse_arguments(int argc, char *argv[], t_data *data);
+bool	ft_parse_arguments(int argc, char *argv[], t_data *data);
 size_t	ft_atoi(const char *str);
 void	ft_init_philosopher(t_philo *philosopers, t_data *data, t_fork *forks);
 void	ft_run_simulation(t_philo *philosophers, t_data *data);
