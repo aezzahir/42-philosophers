@@ -25,7 +25,10 @@ bool	ft_check_death(t_philo *philo)
 		philo->data->someone_died = true;
 		philo->death_time = current_time;
 		philo->died = true;
+		pthread_mutex_lock(&philo->data->write_mutex);
+		printf("%lu %d  died\n", current_time, philo->id);
 		pthread_mutex_unlock(&philo->data->death_mutex);
+		pthread_mutex_unlock(&philo->data->write_mutex);
 		return (true);
 	}
 	return (false);

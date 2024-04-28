@@ -68,13 +68,4 @@ void	ft_run_simulation(t_philo *philosophers, t_data *data)
 		pthread_join(philosophers[i].thread, NULL);
 		i++;
 	}
-	while (--i >= 0)
-	{
-		if (philosophers[i].died)
-		{
-			printf("%lu %d  died\n",
-				philosophers[i].death_time, philosophers[i].id);
-			break ;
-		}
-	}
 }
