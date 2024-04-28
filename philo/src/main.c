@@ -32,7 +32,7 @@ int	main(int argc, char *argv[])
 	t_philo	*philosophers;
 	t_fork	*forks;
 
-	if (argc != 5 && argc != 6 || !ft_parse_arguments(argc, argv, &data))
+	if ((argc != 5 && argc != 6) || !ft_parse_arguments(argc, argv, &data))
 	{
 		printf("./phio n_philo t_die t_eat t_sleep [n_meals]: int >= 0\n");
 		return (0);
