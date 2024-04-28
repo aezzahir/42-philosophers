@@ -20,6 +20,7 @@ void	ft_init_philosopher(t_philo *philosopers, t_data *data, t_fork *forks)
 	while (i < data->number_of_philosophers)
 	{
 		philosopers[i].id = i + 1;
+		philosopers[i].nbr_forks = 0;
 		philosopers[i].data = data;
 		philosopers[i].died = false;
 		philosopers[i].number_of_meals_eaten = 0;

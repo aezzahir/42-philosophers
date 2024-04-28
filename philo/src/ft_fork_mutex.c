@@ -29,7 +29,7 @@ void	ft_lock_fork(t_fork *fork)
 	pthread_mutex_unlock(&(fork->key));
 }
 
-void	ft_unlockt_fork(t_fork *fork)
+void	ft_unlock_fork(t_fork *fork)
 {
 	pthread_mutex_unlock(&(fork->mutex));
 	pthread_mutex_lock(&(fork->key));

@@ -14,24 +14,22 @@
 
 void	ft_eat(t_philo *philo)
 {
-	if (ft_end(philo) || philo->time_to_eat < 1)
+	if (ft_end(philo) || !philo->eat_permission)
 		return ;
-	if (philo->eat_permission)
+	while (philo->eat_permission && philo->nbr_forks < 2)
 	{
 		if (!ft_is_fork_locked(philo->left_fork))
 			ft_take_a_fork(philo, philo->left_fork);
 		if (!ft_is_fork_locked(philo->right_fork))
 			ft_take_a_fork(philo, philo->right_fork);
 	}
-	else
-		return ;
 	philo->last_meal_time = get_current_time() - philo->start_time;
 	write_status(philo, "is eating", GREEN);
 	ft_usleep(philo->time_to_eat, philo);
 	philo->number_of_meals_eaten++;
-	ft_unlockt_fork(philo->left_fork);
-	ft_unlockt_fork(philo->right_fork);
 	philo->eat_permission = false;
+	ft_put_a_fork(philo, philo->left_fork);
+	ft_put_a_fork(philo, philo->right_fork);
 }
 
 void	ft_take_a_fork(t_philo *philo, t_fork *fork)
@@ -39,9 +37,15 @@ void	ft_take_a_fork(t_philo *philo, t_fork *fork)
 	if (ft_end(philo))
 		return ;
 	ft_lock_fork(fork);
+	philo->nbr_forks++;
 	write_status(philo, "has taken a fork", PURPLE);
 }
 
+void	ft_put_a_fork(t_philo *philo, t_fork *fork)
+{
+	ft_unlock_fork(fork);
+	philo->nbr_forks--;
+}
 void	ft_sleep(t_philo *philo)
 {
 	if (ft_end(philo) || philo->time_to_sleep < 1)
@@ -55,23 +59,21 @@ void	ft_think(t_philo *philo)
 	if (ft_end(philo))
 		return ;
 	write_status(philo, "is thinking", YELLOW);
-	while (!ft_check_eating_permission(philo))
+	while ((!philo->eat_permission && philo->nbr_forks < 2))
 	{
 		if (ft_end(philo))
-			return ;
-		if ((philo->number_of_philosophers % 2 == 1)
-			&& !ft_is_fork_locked(philo->left_fork))
+			break;
+		if (!ft_is_fork_locked(philo->left_fork))
 		{
 			ft_take_a_fork(philo, philo->left_fork);
 			break ;
 		}
-		if ((philo->number_of_philosophers % 2 == 1)
-			&& !ft_is_fork_locked(philo->right_fork))
+		if (!ft_is_fork_locked(philo->right_fork))
 		{
 			ft_take_a_fork(philo, philo->right_fork);
 			break ;
 		}
 	}
-	if (philo->number_of_philosophers != 1)
+	if (philo->number_of_philosophers > 1)
 		philo->eat_permission = true;
 }

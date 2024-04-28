@@ -45,6 +45,7 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
+	int			nbr_forks;
 	pthread_t	thread;
 	t_data		*data;
 	bool		died;
@@ -65,7 +66,8 @@ typedef struct s_philo
 t_fork	*ft_forks(int number_of_philosophers);
 void	ft_init_fork(t_fork *fork);
 void	ft_lock_fork(t_fork *fork);
-void	ft_unlockt_fork(t_fork *fork);
+void	ft_unlock_fork(t_fork *fork);
+void	ft_put_a_fork(t_philo *philo, t_fork *fork);
 void	ft_destroy_fork(t_fork *fork);
 bool	ft_is_fork_locked(t_fork *fork);
 void	*philo_routine(void *philo);

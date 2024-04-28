@@ -17,6 +17,20 @@ void	*philo_routine(void *a_philo)
 	t_philo	*philo;
 
 	philo = (t_philo *)a_philo;
+	if (philo->number_of_philosophers == 1)	
+	{
+		write_status(philo, "is thinking", YELLOW);
+		while ((!philo->eat_permission && philo->nbr_forks < 2))
+		{
+			if (!ft_is_fork_locked(philo->left_fork))
+				ft_take_a_fork(philo, philo->left_fork);
+			if (ft_check_death(philo))
+			{
+				ft_put_a_fork(philo, philo->left_fork);
+				return (NULL);
+			}
+		}
+	}
 	while (!ft_end(philo))
 	{
 		ft_eat(philo);
