@@ -44,7 +44,7 @@ void	ft_take_a_fork(t_philo *philo, t_fork *fork)
 
 void	ft_sleep(t_philo *philo)
 {
-	if (ft_end(philo) || philo->time_to_sleep < 1 || philo->number_of_philosophers == 1)
+	if (ft_end(philo) || philo->time_to_sleep < 1)
 		return ;
 	write_status(philo, "is sleeping", CYAN);
 	ft_usleep(philo->time_to_sleep, philo);

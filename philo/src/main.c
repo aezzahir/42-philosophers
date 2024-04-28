@@ -19,9 +19,9 @@ void	*philo_routine(void *a_philo)
 	philo = (t_philo *)a_philo;
 	while (!ft_end(philo))
 	{
-		ft_think(philo);
 		ft_eat(philo);
 		ft_sleep(philo);
+		ft_think(philo);
 	}
 	return (NULL);
 }
@@ -67,5 +67,14 @@ void	ft_run_simulation(t_philo *philosophers, t_data *data)
 	{
 		pthread_join(philosophers[i].thread, NULL);
 		i++;
+	}
+	while (--i >= 0)
+	{
+		if (philosophers[i].died)
+		{
+			printf("%lu %d  died\n",
+				philosophers[i].death_time, philosophers[i].id);
+			break ;
+		}
 	}
 }
