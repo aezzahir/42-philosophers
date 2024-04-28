@@ -19,9 +19,9 @@ void	*philo_routine(void *a_philo)
 	philo = (t_philo *)a_philo;
 	while (!ft_end(philo))
 	{
+		ft_think(philo);
 		ft_eat(philo);
 		ft_sleep(philo);
-		ft_think(philo);
 	}
 	return (NULL);
 }
