@@ -45,7 +45,7 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
-	int			nbr_forks;
+	int			nb_forks;
 	pthread_t	thread;
 	t_data		*data;
 	bool		died;
@@ -66,10 +66,9 @@ typedef struct s_philo
 t_fork	*ft_forks(int number_of_philosophers);
 void	ft_init_fork(t_fork *fork);
 void	ft_lock_fork(t_fork *fork);
-void	ft_unlock_fork(t_fork *fork);
-void	ft_put_a_fork(t_philo *philo, t_fork *fork);
+void	ft_unlockt_fork(t_fork *fork);
 void	ft_destroy_fork(t_fork *fork);
-bool	ft_is_fork_locked(t_fork *fork);
+bool	locked(t_fork *fork);
 void	*philo_routine(void *philo);
 bool	ft_parse_arguments(int argc, char *argv[], t_data *data);
 size_t	ft_atoi(const char *str);
@@ -78,8 +77,6 @@ void	ft_run_simulation(t_philo *philosophers, t_data *data);
 void	ft_sleep(t_philo *philo);
 void	ft_eat(t_philo *philo);
 void	ft_think(t_philo *philo);
-void	ft_take_a_fork(t_philo *philo, t_fork *fork);
-bool	ft_check_eating_permission(t_philo *philo);
 bool	ft_check_death(t_philo *philo);
 bool	ft_philo_is_full(t_philo *philo);
 bool	ft_end(t_philo *philo);
@@ -87,6 +84,18 @@ size_t	get_current_time(void);
 int		ft_usleep(size_t milliseconds, t_philo *philo);
 void	write_status(t_philo *philo, char *status, char *color);
 void	ft_cleanup(t_philo *philosophers, t_data *data, t_fork *forks);
+
+
+
+
+
+
+
+void 	take(t_philo *philo, t_fork *fork);
+void	put(t_philo *philo, t_fork *fork);
+void	ft_fork(t_philo *philo, int index, void f(t_philo *philo, t_fork *fork));
+
+
 
 # define RED "\033[1;31m"
 # define GREEN "\033[1;32m"

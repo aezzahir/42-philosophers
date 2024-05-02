@@ -12,68 +12,49 @@
 
 #include "../includes/philo.h"
 
-void	ft_eat(t_philo *philo)
-{
-	if (ft_end(philo) || !philo->eat_permission)
-		return ;
-	while (philo->eat_permission && philo->nbr_forks < 2)
-	{
-		if (!ft_is_fork_locked(philo->left_fork))
-			ft_take_a_fork(philo, philo->left_fork);
-		if (!ft_is_fork_locked(philo->right_fork))
-			ft_take_a_fork(philo, philo->right_fork);
-	}
-	philo->last_meal_time = get_current_time() - philo->start_time;
-	write_status(philo, "is eating", GREEN);
-	ft_usleep(philo->time_to_eat, philo);
-	philo->number_of_meals_eaten++;
-	philo->eat_permission = false;
-	ft_put_a_fork(philo, philo->left_fork);
-	ft_put_a_fork(philo, philo->right_fork);
-}
 
-void	ft_take_a_fork(t_philo *philo, t_fork *fork)
-{
-	if (ft_end(philo))
-		return ;
-	ft_lock_fork(fork);
-	philo->nbr_forks++;
-	write_status(philo, "has taken a fork", PURPLE);
-}
-
-void	ft_put_a_fork(t_philo *philo, t_fork *fork)
-{
-	ft_unlock_fork(fork);
-	philo->nbr_forks--;
-}
-void	ft_sleep(t_philo *philo)
-{
-	if (ft_end(philo) || philo->time_to_sleep < 1)
-		return ;
-	write_status(philo, "is sleeping", CYAN);
-	ft_usleep(philo->time_to_sleep, philo);
-}
 
 void	ft_think(t_philo *philo)
 {
-	if (ft_end(philo))
-		return ;
 	write_status(philo, "is thinking", YELLOW);
-	while ((!philo->eat_permission && philo->nbr_forks < 2))
+	while(!ft_end(philo) && philo->nb_forks < 2)
 	{
-		if (ft_end(philo))
-			break;
-		if (!ft_is_fork_locked(philo->left_fork))
+		if (philo->eat_permission)
 		{
-			ft_take_a_fork(philo, philo->left_fork);
-			break ;
+			if(!locked(philo->left_fork) || !locked(philo->right_fork))
+				ft_fork(philo, 2, take);
 		}
-		if (!ft_is_fork_locked(philo->right_fork))
-		{
-			ft_take_a_fork(philo, philo->right_fork);
-			break ;
-		}
+		else if (locked(philo->left_fork) && locked(philo->right_fork))
+			philo->eat_permission = true;
+		else if (philo->number_of_philosophers % 2 == 1 && philo->id == 1 && locked(philo->right_fork))
+			philo->eat_permission = true;
+		else if (philo->number_of_philosophers % 2 == 1 && philo->id == philo->number_of_philosophers && locked(philo->left_fork))
+			philo->eat_permission = true;
+		else if (philo->number_of_philosophers == 1)
+			ft_fork(philo, 1, take);
 	}
-	if (philo->number_of_philosophers > 1)
-		philo->eat_permission = true;
+	if (ft_end(philo))
+	{
+		if (!locked(philo->left_fork))
+			ft_fork(philo, -1, put);
+		if (!locked(philo->right_fork))
+			ft_fork(philo, 1, put);
+	}
+}
+
+
+
+void	ft_eat(t_philo *philo)
+{
+	philo->last_meal_time = get_current_time() - philo->start_time;
+	write_status(philo, "is eating", GREEN);
+	philo->number_of_meals_eaten++;
+	ft_usleep(philo->time_to_eat, philo);
+	ft_fork(philo, 2, put); // put the 2 forks right then left
+}
+
+void	ft_sleep(t_philo *philo)
+{
+	write_status(philo, "is sleeping", CYAN);
+	ft_usleep(philo->time_to_sleep, philo);
 }
